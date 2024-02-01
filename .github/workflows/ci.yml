@@ -71,7 +71,6 @@ jobs:
           echo "repo_downcase=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
           branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "image_tag=${branch}-${GITHUB_SHA:0:7}" >>${GITHUB_ENV}
-          cat ${GITHUB_ENV}
 
       - name: Build and push
         uses: docker/build-push-action@v5
@@ -81,5 +80,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ env.repo_downcase }}:${{ github.image_tag }}
+            ghcr.io/${{ env.repo_downcase }}:${{ env.image_tag }}
         if: github.event_name == 'push'
