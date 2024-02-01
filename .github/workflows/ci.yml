@@ -72,14 +72,6 @@ jobs:
           branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "image_tag=${branch}-${GITHUB_SHA:0:7}" >>${GITHUB_ENV}
 
-      - name: Build image
-        run: |
-          REPOSITORY=$(echo $GITHUB_REPOSITORY/${{ github.event.repository.name }} | tr '[A-Z]' '[a-z]')
-          TAG=${GITHUB_REF#"refs/heads/"}-${GITHUB_SHA:0:7}
-
-          docker build --platform=linux/amd64,linux/arm64 -t ghcr.io/${REPOSITORY}:${TAG} .
-        if: github.event_name == 'push'
-
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
